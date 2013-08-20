@@ -18,26 +18,61 @@ import json
 
 import webapp2
 
-people = [{"_id": 1, "firstName": "Charles", "lastName": "Charlesworth"},
-          {"_id": 2, "firstName": "Denise", "lastName": "Dentiste"},
-          {"_id": 3, "firstName": "Ben", "lastName": "Benjamin"}]
-          
+# This dict is the "database"
+people = {1: {"_id": 1, "firstName": "Charles", "lastName": "Charlesworth"},
+          2: {"_id": 2, "firstName": "Denise", "lastName": "Dentiste"},
+          3: {"_id": 3, "firstName": "Ben", "lastName": "Benjamin"}};
+
+max_id = 3
+
 class GetPeopleHandler(webapp2.RequestHandler):
     def get(self):
+        self.response.status = '200 OK'
         self.response.content_type = 'application/json'
         self.response.charset = 'utf-8'
-        self.response.write(json.dumps(people))
+        self.response.write(json.dumps(people.values()))
+
+    def post(self):
+        global max_id
+        # TODO: specify encoding
+        person = json.loads(self.request.body);
+        # TODO: what to do if person already specifies _id
+        max_id += 1
+        id = max_id
+        person['_id'] = id
+        people[id] = person
+        self.response.status = "204 No Content"
 
 class GetPersonHandler(webapp2.RequestHandler):
     def get(self, id):
-        y = [x for x in people if x['_id'] == int(id)]
-        if len(y) > 0:
-            person = y[0]
+        id = int(id)
+        try:
+            person = people[id];
+            self.response.status = "200 OK"
+            self.response.content_type = 'application/json'
+            self.response.charset = 'utf-8'
+            self.response.write(json.dumps(person))
+        except KeyError:
+            self.response.status = "404 Not Found"
+
+    def delete(self, id):
+        id = int(id)
+        try:
+            del people[id];
+            self.response.status = "204 No Content"
+        except KeyError:
+            self.response.status = "404 Not Found"
+
+    def put(self, id):
+        id = int(id)
+        if id in people:
+            # TODO: specify encoding
+            person = json.loads(self.request.body);
+            person['_id'] = id
+            people[id] = person
+            self.response.status = "204 No Content"
         else:
-            person = {}
-        self.response.content_type = 'application/json'
-        self.response.charset = 'utf-8'
-        self.response.write(json.dumps(person))
+            self.response.status = "404 Not Found"
 
 app = webapp2.WSGIApplication([
     ('/people', GetPeopleHandler),
