@@ -14,7 +14,7 @@ handlers:
   upload: index\.html
 
 - url: .*
-  script: main.app
+  script: ndbmain.app
 
 libraries:
 - name: webapp2
