@@ -20,16 +20,10 @@ from google.appengine.ext import ndb
 
 import webapp2
 
+def get_parent_key():
+    return ndb.Key('root', 'resttest')
+
 class Person(ndb.Model):
-    '''We do not use ancestor queries, so this is treated with eventual consistency.
-    Writes may not be available for reads for some time.  The alternative is to use
-    ancestor queries, but that creates a one-write-per-second limit, which is not
-    feasible.  Google suggests (e.g. https://developers.google.com/appengine/docs/python/datastore/structuring_for_strong_consistency)
-    caching the information in some way to allow clients to see these 'recent' actions.
-    For example, recently written entities could be put in memcache with reasonably quick
-    expiration, and query results created by combining data store queries results
-    with memcache query results.
-    '''
     firstName = ndb.StringProperty()
     lastName = ndb.StringProperty()
 
@@ -41,11 +35,11 @@ class Person(ndb.Model):
         if 'key' in d:
             return cls(key=ndb.Key(urlsafe=d['key']), firstName=d['firstName'], lastName=d['lastName'])
 
-        return cls(firstName=d['firstName'], lastName=d['lastName'])
+        return cls(parent=get_parent_key(), firstName=d['firstName'], lastName=d['lastName'])
 
 class GetPeopleHandler(webapp2.RequestHandler):
     def get_people(self):
-        persons = Person.query()
+        persons = Person.query(ancestor=get_parent_key())
         people = []
         for person in persons:
             people.append(person.to_dict())
@@ -58,6 +52,7 @@ class GetPeopleHandler(webapp2.RequestHandler):
             person.put()
             person = Person(firstName='Ben', lastName='Benjamin')
             person.put()
+            # N.B. this query won't see the values just put
             persons = Person.query()
             for person in persons:
                 people.append(person.to_dict())
