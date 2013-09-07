@@ -14,7 +14,7 @@
       <blockquote>{{ greeting.content }}</blockquote>
     {% endfor %}
 
-    <form action="/sign?guestbook_name={{ guestbook_name }}" method="post">
+    <form action="{{ sign_guestbook_action }}" method="post">
       <div><textarea name="content" rows="3" cols="60"></textarea></div>
       <div><input type="submit" value="Sign Guestbook"></div>
     </form>
@@ -29,7 +29,11 @@
     <form name="guestbook_picker">
       <select onchange="javascript:set_guestbook_name();" name="guestbook_select">
       {% for guestbook in guestbook_names %}
-        <option>{{ guestbook }}</option>
+        {% if guestbook == guestbook_name %}
+          <option selected="1">{{ guestbook }}</option>
+        {% else %}
+          <option>{{ guestbook }}</option>
+        {% endif %}
       {% endfor %}
       </select>
     </form>
