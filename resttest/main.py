@@ -18,6 +18,7 @@ import json
 
 import webapp2
 
+# TODO: make people a dict rather than an array
 people = [{"_id": 1, "firstName": "Charles", "lastName": "Charlesworth"},
           {"_id": 2, "firstName": "Denise", "lastName": "Dentiste"},
           {"_id": 3, "firstName": "Ben", "lastName": "Benjamin"}]
@@ -38,6 +39,45 @@ class GetPersonHandler(webapp2.RequestHandler):
         self.response.content_type = 'application/json'
         self.response.charset = 'utf-8'
         self.response.write(json.dumps(person))
+
+    def delete(self, id):
+        y = [x for x in people if x['_id'] == int(id)]
+        if len(y) > 0:
+            person = y[0]
+            people.remove(person)
+            #set response code OK
+        else:
+            person = {}
+            #set response code Not Found
+        #self.response.content_type = 'application/json'
+        #self.response.charset = 'utf-8'
+        #self.response.write(json.dumps(person))
+
+    def post(self, id):
+        person = json.loads(self.request.body)
+        for i in range(len(people)):
+            if people[i]['_id'] == int(id):
+                people[i] = person
+                #set response code OK
+                return
+        #set response code Not Found
+        
+        #self.response.content_type = 'application/json'
+        #self.response.charset = 'utf-8'
+        #self.response.write(json.dumps(person))
+
+    def put(self, id):
+        for i in range(len(people)):
+            if people[i]['_id'] == int(id):
+                #set response code Already Exists
+                return
+
+        person = json.loads(self.request.body)
+        people.append(person)
+        #set response code OK
+        #self.response.content_type = 'application/json'
+        #self.response.charset = 'utf-8'
+        #self.response.write(json.dumps(person))
 
 app = webapp2.WSGIApplication([
     ('/people', GetPeopleHandler),

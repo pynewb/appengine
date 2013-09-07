@@ -19,8 +19,8 @@ import webapp2
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-    	self.response.content_type = 'application/json'
-    	self.response.charset = 'utf-8'
+        self.response.content_type = 'application/json'
+        self.response.charset = 'utf-8'
         self.response.write(json.dumps([{'firstName': 'Charles', 'lastName': 'Charlesworth'},
                                         {'firstName': 'Denise', 'lastName': 'Densiste'}]))
 
