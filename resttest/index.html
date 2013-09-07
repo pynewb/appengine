@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Language" content="en"/>
+        <title>REST test</title>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>REST test</h1>
+        
+        <h2>People</h2>
+        <div id="people"></div>
+        
+        <h2>Person</h2>
+        <div id="person"></div>
+        <label>id: <input id="id" type="text"></label>
+        <input id="getperson" type="button" value="Get">
+        <input id="deleteperson" type="button" value="Delete">
+        
+        <h2>Add/Update Person</h2>
+        <div id="newperson"></div>
+        <label>First Name: <input id="firstName" type="text" ></label>
+        <label>Last Name: <input id="lastName" type="text" ></label>
+        <input id="postperson" type="button" value="Add">
+        <input id="putperson" type="button" value="Update">
+        
+        <script type="text/javascript">
+            function update_people() {
+                $.ajax({url: '/people',
+                       dataType: 'json',
+                       error: function (jqXHR, textStatus, errorThrown) {
+                        alert('AJAX textStatus ' + textStatus + ' errorThrown ' + errorThrown);
+                       },
+                       success: function (data, textStatus, jqXHR) {
+                        $("#people").text(JSON.stringify(data));
+                       }});
+            }
+
+            function get_person() {
+                id = $("#id").val();
+                $.ajax({url: '/people/' + id,
+                       dataType: 'json',
+                       error: function (jqXHR, textStatus, errorThrown) {
+                        alert('AJAX textStatus ' + textStatus + ' errorThrown ' + errorThrown);
+                       },
+                       success: function (data, textStatus, jqXHR) {
+                        $("#person").text(JSON.stringify(data));
+                       }});
+            }
+            
+            function delete_person() {
+                id = $("#id").val();
+                $.ajax({url: '/people/' + id,
+                       method: 'DELETE',
+                       dataType: 'json',
+                       error: function (jqXHR, textStatus, errorThrown) {
+                        alert('AJAX textStatus ' + textStatus + ' errorThrown ' + errorThrown);
+                       },
+                       success: function (data, textStatus, jqXHR) {
+                        $("#person").text(textStatus);
+                        update_people();
+                       }});
+            }
+            
+            function post_person() {
+                first_name = $("#firstName").val();
+                last_name = $("#lastName").val();
+                $.ajax({url: '/people',
+                       contentType: 'application/json',
+                       method: 'POST',
+                       data: JSON.stringify({firstName: first_name, lastName: last_name}),
+                       dataType: 'json',
+                       processData: false,
+                       error: function (jqXHR, textStatus, errorThrown) {
+                        alert('AJAX textStatus ' + textStatus + ' errorThrown ' + errorThrown);
+                       },
+                       success: function (data, textStatus, jqXHR) {
+                        $("#newperson").text(textStatus);
+                        update_people();
+                       }});
+            }
+            
+            function put_person() {
+                id = $("#id").val();
+                first_name = $("#firstName").val();
+                last_name = $("#lastName").val();
+                $.ajax({url: '/people/' + id,
+                       contentType: 'application/json',
+                       method: 'PUT',
+                       data: JSON.stringify({firstName: first_name, lastName: last_name}),
+                       dataType: 'json',
+                       processData: false,
+                       error: function (jqXHR, textStatus, errorThrown) {
+                        alert('AJAX textStatus ' + textStatus + ' errorThrown ' + errorThrown);
+                       },
+                       success: function (data, textStatus, jqXHR) {
+                        $("#newperson").text(textStatus);
+                        update_people();
+                       }});
+            }
+            
+            $(function () {
+                $("#getperson").click(get_person);
+                $("#deleteperson").click(delete_person);
+                $("#postperson").click(post_person);
+                $("#putperson").click(put_person);
+                update_people();
+            });
+        </script>
+    </body>
+</html>

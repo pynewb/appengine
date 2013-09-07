@@ -9,8 +9,12 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
+- url: /index\.html
+  static_files: index.html
+  upload: index\.html
+
 - url: .*
-  script: main.app
+  script: ndbmain.app
 
 libraries:
 - name: webapp2
