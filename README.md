@@ -3,6 +3,9 @@ appengine
 
 Learning to Use AppEngine
 
+knockouttest uses a slight modification of list6.html from my knockout repo with a REST backend in App Engine that
+is a combination of the resttest in this appengine repo and a bit of the logic in the app.js in the knockout repo.
+
 On the question of using webapp[2] versus Bottle, Flask or others:
 
 http://stackoverflow.com/questions/6774371/flask-vs-webapp2-for-google-app-engine
