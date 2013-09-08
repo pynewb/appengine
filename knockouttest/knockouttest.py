@@ -110,6 +110,7 @@ class GetPeopleHandler(webapp2.RequestHandler):
         post_person = json.loads(self.request.body)
         person = Person.from_dict(post_person)
         person.put()
+        # return the inserted instance to give the client the key (_id)
         self.response.status = "200 OK"
         self.response.content_type = 'application/json'
         self.response.charset = 'utf-8'
@@ -132,7 +133,7 @@ class GetPersonHandler(webapp2.RequestHandler):
             key = ndb.Key(urlsafe=id)
             key.delete();
             self.response.status = "204 No Content"
-        except KeyError:
+        except:
             self.response.status = "404 Not Found"
 
     def put(self, id):
