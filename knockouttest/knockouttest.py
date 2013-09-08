@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright 2007 Google Inc.
+# Copyright 2013 pynewb
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -85,6 +85,7 @@ class GetPeopleHandler(webapp2.RequestHandler):
             
         if len(people) == 0:
             # initialize the data store
+            # TODO: make this a batch put and call get_parent_key() just once
             person = Person(parent=get_parent_key(), firstName='Charles', lastName='Charlesworth')
             person.put()
             person = Person(parent=get_parent_key(), firstName='Denise', lastName='Dentiste')
