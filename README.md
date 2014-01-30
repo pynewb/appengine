@@ -3,8 +3,18 @@ appengine
 
 Learning to Use AppEngine
 
-knockouttest uses a slight modification of list6.html from my knockout repo with a REST backend in App Engine that
-is a combination of the resttest in this appengine repo and a bit of the logic in the app.js in the knockout repo.
+appengine101 - Google developers training example (https://developers.google.com/appengine/training/py101_1/)
+firsttest - App Engine Getting Started Python Hello, World (https://developers.google.com/appengine/docs/python/gettingstartedpython27/helloworld)
+gettingstarted - App Engine Getting Started Python, up to Hello, World (https://developers.google.com/appengine/docs/python/gettingstartedpython27/helloworld)
+guestbook - App Engine Getting Started Python, pretty much through the end, although it does not
+            look quite like the current web site (https://developers.google.com/appengine/docs/python/gettingstartedpython27/staticfiles)
+knockouttest - uses a slight modification of list6.html from my knockout repo with a REST backend in App Engine that
+            is a combination of the resttest in this appengine repo and a bit of the logic in the app.js in the knockout repo.
+listmacher - just a placeholder; really does nothing
+restapi - seems to be an abandoned version of resttest
+restbottle - an abandoned version of testtest that uses bottle
+resttest - a rest backend serving people from ndb with a barebones HTML front end using jquery; swapping main in for
+           ndbmain in app.yaml changes to an API that does not have an ndb backend
 
 On the question of using webapp[2] versus Bottle, Flask or others:
 
